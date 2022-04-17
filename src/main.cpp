@@ -12,6 +12,7 @@ int main(int argc, char** argv)
 #endif
 
     MainWindow window{"Long Math Calculator"};
+    window.setFixedSize(window.size());
     window.show();
 
     return QApplication::exec();

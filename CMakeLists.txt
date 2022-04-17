@@ -30,7 +30,12 @@ include_directories(
 add_subdirectory(${LIB_BIGINTEGER})
 
 file(GLOB PROJECT_SOURCES src/*.cpp src/*.ui include/*.h)
-add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
+
+if (WIN32)
+    add_executable(${PROJECT_NAME} WIN32 ${PROJECT_SOURCES})
+else()
+    add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
+endif()
 
 target_link_libraries(${PROJECT_NAME}
     Qt::Core
