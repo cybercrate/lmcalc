@@ -40,6 +40,8 @@ private slots:
 
     void addPressed();
     void subtractPressed();
+    void multiplyPressed();
+    void dividePressed();
     void changeSignPressed();
     void equalPressed();
 

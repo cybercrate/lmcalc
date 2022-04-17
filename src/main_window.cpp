@@ -25,6 +25,8 @@ MainWindow::MainWindow(QString&& title, QWidget* parent)
     // Operators.
     connect(ui_->pushButton_plus, &QPushButton::clicked, this, &MainWindow::addPressed);
     connect(ui_->pushButton_minus, &QPushButton::clicked, this, &MainWindow::subtractPressed);
+    connect(ui_->pushButton_multiply, &QPushButton::clicked, this, &MainWindow::multiplyPressed);
+    connect(ui_->pushButton_divide, &QPushButton::clicked, this, &MainWindow::dividePressed);
     connect(ui_->pushButton_changeSign, &QPushButton::clicked, this, &MainWindow::changeSignPressed);
     connect(ui_->pushButton_equal, &QPushButton::clicked, this, &MainWindow::equalPressed);
 
@@ -82,12 +84,32 @@ void MainWindow::subtractPressed()
     setArithmeticOperation();
 }
 
+void MainWindow::multiplyPressed()
+{
+    if (operationCompleted_) return;
+
+    currentOperation_ = Operation::Multiply;
+    setArithmeticOperation();
+}
+
+void MainWindow::dividePressed()
+{
+    if (operationCompleted_) return;
+
+    currentOperation_ = Operation::Divide;
+    setArithmeticOperation();
+}
+
 void MainWindow::setArithmeticOperation()
 {
     if (currentOperation_ == Operation::Add)
         ui_->calculationPanel->setText(Consts::add);
     else if (currentOperation_ == Operation::Subtract)
         ui_->calculationPanel->setText(Consts::subtract);
+    else if (currentOperation_ == Operation::Multiply)
+        ui_->calculationPanel->setText(Consts::multiply);
+    else if (currentOperation_ == Operation::Divide)
+        ui_->calculationPanel->setText(Consts::divide);
 
     waitingForOperator_ = false;
     waitingForOperand_ = true;
@@ -122,6 +144,10 @@ void MainWindow::equalPressed()
         op = Consts::add;
     else if (currentOperation_ == Operation::Subtract)
         op = Consts::subtract;
+    else if (currentOperation_ == Operation::Multiply)
+        op = Consts::multiply;
+    else if (currentOperation_ == Operation::Divide)
+        op = Consts::divide;
 
     auto text = value_ + " " + op + " " + ui_->display->text();
     ui_->calculationPanel->setText(text);
@@ -145,7 +171,6 @@ void MainWindow::backspacePressed()
         text = Consts::defaultVal;
         waitingForOperand_ = true;
     }
-
     ui_->display->setText(text);
 }
 
@@ -192,19 +217,28 @@ void MainWindow::resetCalculationPanel()
 
 QString MainWindow::calculate(Operation operation)
 {
-    BigInteger number{value_.toStdString()};
+    big_integer number{value_.toStdString()};
     std::string result;
 
     if (operation == Operation::Add) {
         result = number
             .add(ui_->display->text().toStdString())
-            .toString();
+            .to_string();
     }
     else if (operation == Operation::Subtract) {
         result = number
             .subtract(ui_->display->text().toStdString())
-            .toString();
+            .to_string();
     }
-
+    else if (operation == Operation::Multiply) {
+        result = number
+            .multiply(ui_->display->text().toStdString())
+            .to_string();
+    }
+    else if (operation == Operation::Divide) {
+        result = number
+            .divide(ui_->display->text().toStdString())
+            .to_string();
+    }
     return QString::fromStdString(result);
 }

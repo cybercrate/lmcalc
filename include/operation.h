@@ -4,7 +4,9 @@
 enum class Operation {
     None,
     Add,
-    Subtract
+    Subtract,
+    Multiply,
+    Divide
 };
 
 #endif // OPERATION_H

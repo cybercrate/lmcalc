@@ -271,7 +271,7 @@
      <rect>
       <x>530</x>
       <y>190</y>
-      <width>161</width>
+      <width>81</width>
       <height>61</height>
      </rect>
     </property>
@@ -291,7 +291,7 @@
     <property name="geometry">
      <rect>
       <x>610</x>
-      <y>250</y>
+      <y>310</y>
       <width>81</width>
       <height>61</height>
      </rect>
@@ -417,7 +417,7 @@
     <property name="geometry">
      <rect>
       <x>610</x>
-      <y>310</y>
+      <y>370</y>
       <width>81</width>
       <height>61</height>
      </rect>
@@ -459,9 +459,9 @@
     <property name="geometry">
      <rect>
       <x>610</x>
-      <y>370</y>
+      <y>430</y>
       <width>81</width>
-      <height>121</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -506,6 +506,48 @@
     </property>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_multiply">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>250</y>
+      <width>81</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(222, 221, 218);</string>
+    </property>
+    <property name="text">
+     <string>×</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_divide">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>190</y>
+      <width>81</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(222, 221, 218);</string>
+    </property>
+    <property name="text">
+     <string>÷</string>
     </property>
    </widget>
   </widget>

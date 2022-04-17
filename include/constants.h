@@ -9,6 +9,8 @@ namespace Consts {
     // Operators
     const auto add{"+"};
     const auto subtract{"-"};
+    const auto multiply{"×"};
+    const auto divide{"÷"};
 
     // Memory.
     const auto clearMemory{"MC"};

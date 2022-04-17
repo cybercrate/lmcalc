@@ -11,12 +11,9 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 if (WIN32)
-    if (MSVC)
-        set(CMAKE_PREFIX_PATH $ENV{QT_CMAKE_PATH_MSVC})
-    elseif(MinGW)
-        set(CMAKE_PREFIX_PATH $ENV{QT_CMAKE_PATH_MINGW})
-    endif()
+    set(CMAKE_PREFIX_PATH $ENV{QT_CMAKE_PATH_MSVC})
 endif()
+
 
 find_package(Qt6 COMPONENTS
     Core
@@ -24,7 +21,13 @@ find_package(Qt6 COMPONENTS
     Widgets
     REQUIRED)
 
-include_directories(include)
+set(LIB_BIGINTEGER lib/biginteger)
+
+include_directories(
+    include
+    ${LIB_BIGINTEGER}/include)
+
+add_subdirectory(${LIB_BIGINTEGER})
 
 file(GLOB PROJECT_SOURCES src/*.cpp src/*.ui include/*.h)
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
@@ -32,7 +35,8 @@ add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 target_link_libraries(${PROJECT_NAME}
     Qt::Core
     Qt::Gui
-    Qt::Widgets)
+    Qt::Widgets
+    lib_biginteger)
 
 if(WIN32)
     set(DEBUG_SUFFIX)
