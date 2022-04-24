@@ -1,7 +1,7 @@
 #include "constants.h"
 #include "main_window.h"
 #include "big_integer.h"
-#include "./ui_main_window.h"
+#include "ui_main_window.h"
 
 MainWindow::MainWindow(QString&& title, QWidget* parent)
     : QMainWindow{parent},
@@ -217,7 +217,7 @@ void MainWindow::resetCalculationPanel()
 
 QString MainWindow::calculate(Operation operation)
 {
-    big_integer number{value_.toStdString()};
+    wingmann::big_integer number{value_.toStdString()};
     std::string result;
 
     if (operation == Operation::Add) {
