@@ -140,15 +140,23 @@ void MainWindow::equalPressed()
     if (operationCompleted_) return;
 
     QString op;
-    if (currentOperation_ == Operation::Add)
-        op = Consts::add;
-    else if (currentOperation_ == Operation::Subtract)
-        op = Consts::subtract;
-    else if (currentOperation_ == Operation::Multiply)
-        op = Consts::multiply;
-    else if (currentOperation_ == Operation::Divide)
-        op = Consts::divide;
 
+    switch (currentOperation_) {
+    case Operation::Add:
+        op = Consts::add;
+        break;
+    case Operation::Subtract:
+        op = Consts::subtract;
+        break;
+    case Operation::Multiply:
+        op = Consts::multiply;
+        break;
+    case Operation::Divide:
+        op = Consts::divide;
+        break;
+    default:
+        break;
+    }
     auto text = value_ + " " + op + " " + ui_->display->text();
     ui_->calculationPanel->setText(text);
 
@@ -220,25 +228,29 @@ QString MainWindow::calculate(Operation operation)
     wingmann::big_integer number{value_.toStdString()};
     std::string result;
 
-    if (operation == Operation::Add) {
+    switch (operation) {
+    case Operation::Add:
         result = number
             .add(ui_->display->text().toStdString())
             .to_string();
-    }
-    else if (operation == Operation::Subtract) {
+        break;
+    case Operation::Subtract:
         result = number
             .subtract(ui_->display->text().toStdString())
             .to_string();
-    }
-    else if (operation == Operation::Multiply) {
+        break;
+    case Operation::Multiply:
         result = number
             .multiply(ui_->display->text().toStdString())
             .to_string();
-    }
-    else if (operation == Operation::Divide) {
+        break;
+    case Operation::Divide:
         result = number
             .divide(ui_->display->text().toStdString())
             .to_string();
+        break;
+    default:
+        break;
     }
     return QString::fromStdString(result);
 }
