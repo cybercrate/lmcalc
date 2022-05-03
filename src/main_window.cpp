@@ -102,15 +102,22 @@ void MainWindow::dividePressed()
 
 void MainWindow::setArithmeticOperation()
 {
-    if (currentOperation_ == Operation::Add)
+    switch (currentOperation_) {
+    case Operation::Add:
         ui_->calculationPanel->setText(Consts::add);
-    else if (currentOperation_ == Operation::Subtract)
+        break;
+    case Operation::Subtract:
         ui_->calculationPanel->setText(Consts::subtract);
-    else if (currentOperation_ == Operation::Multiply)
+        break;
+    case Operation::Multiply:
         ui_->calculationPanel->setText(Consts::multiply);
-    else if (currentOperation_ == Operation::Divide)
+        break;
+    case Operation::Divide:
         ui_->calculationPanel->setText(Consts::divide);
-
+        break;
+    default:
+        break;
+    }
     waitingForOperator_ = false;
     waitingForOperand_ = true;
 
@@ -227,26 +234,27 @@ QString MainWindow::calculate(Operation operation)
 {
     wingmann::big_integer number{value_.toStdString()};
     std::string result;
+    auto current_display_value = ui_->display->text().toStdString();
 
     switch (operation) {
     case Operation::Add:
         result = number
-            .add(ui_->display->text().toStdString())
+            .add(current_display_value)
             .to_string();
         break;
     case Operation::Subtract:
         result = number
-            .subtract(ui_->display->text().toStdString())
+            .subtract(current_display_value)
             .to_string();
         break;
     case Operation::Multiply:
         result = number
-            .multiply(ui_->display->text().toStdString())
+            .multiply(current_display_value)
             .to_string();
         break;
     case Operation::Divide:
         result = number
-            .divide(ui_->display->text().toStdString())
+            .divide(current_display_value)
             .to_string();
         break;
     default:
