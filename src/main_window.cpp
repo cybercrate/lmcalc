@@ -1,12 +1,10 @@
-#include "constants.h"
 #include "main_window.h"
 #include "big_integer.h"
+#include "constants.h"
 #include "ui_main_window.h"
 
 MainWindow::MainWindow(QString&& title, QWidget* parent)
-    : QMainWindow{parent},
-      ui_{new Ui::MainWindow}
-{
+    : QMainWindow{parent}, ui_{new Ui::MainWindow} {
     ui_->setupUi(this);
     setWindowTitle(title);
 
@@ -27,7 +25,8 @@ MainWindow::MainWindow(QString&& title, QWidget* parent)
     connect(ui_->pushButton_minus, &QPushButton::clicked, this, &MainWindow::subtractPressed);
     connect(ui_->pushButton_multiply, &QPushButton::clicked, this, &MainWindow::multiplyPressed);
     connect(ui_->pushButton_divide, &QPushButton::clicked, this, &MainWindow::dividePressed);
-    connect(ui_->pushButton_changeSign, &QPushButton::clicked, this, &MainWindow::changeSignPressed);
+    connect(
+        ui_->pushButton_changeSign, &QPushButton::clicked, this, &MainWindow::changeSignPressed);
     connect(ui_->pushButton_equal, &QPushButton::clicked, this, &MainWindow::equalPressed);
 
     // Modifiers.
@@ -41,13 +40,11 @@ MainWindow::MainWindow(QString&& title, QWidget* parent)
     connect(ui_->pushButton_addToMemory, &QPushButton::clicked, this, &MainWindow::memoryPressed);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui_;
 }
 
-void MainWindow::digitPressed()
-{
+void MainWindow::digitPressed() {
     auto button = qobject_cast<QPushButton*>(sender());
 
     if (operationCompleted_) {
@@ -62,46 +59,40 @@ void MainWindow::digitPressed()
         value_ = Consts::empty;
     }
 
-    if (ui_->display->text() == Consts::defaultVal)
-        resetDisplay(true);
+    if (ui_->display->text() == Consts::defaultVal) resetDisplay(true);
 
     ui_->display->setText(ui_->display->text() + button->text());
 }
 
-void MainWindow::addPressed()
-{
+void MainWindow::addPressed() {
     if (operationCompleted_) return;
 
     currentOperation_ = Operation::Add;
     setArithmeticOperation();
 }
 
-void MainWindow::subtractPressed()
-{
+void MainWindow::subtractPressed() {
     if (operationCompleted_) return;
 
     currentOperation_ = Operation::Subtract;
     setArithmeticOperation();
 }
 
-void MainWindow::multiplyPressed()
-{
+void MainWindow::multiplyPressed() {
     if (operationCompleted_) return;
 
     currentOperation_ = Operation::Multiply;
     setArithmeticOperation();
 }
 
-void MainWindow::dividePressed()
-{
+void MainWindow::dividePressed() {
     if (operationCompleted_) return;
 
     currentOperation_ = Operation::Divide;
     setArithmeticOperation();
 }
 
-void MainWindow::setArithmeticOperation()
-{
+void MainWindow::setArithmeticOperation() {
     switch (currentOperation_) {
     case Operation::Add:
         ui_->calculationPanel->setText(Consts::add);
@@ -121,14 +112,12 @@ void MainWindow::setArithmeticOperation()
     waitingForOperator_ = false;
     waitingForOperand_ = true;
 
-    if (value_.isEmpty())
-        value_ = ui_->display->text();
+    if (value_.isEmpty()) value_ = ui_->display->text();
 
     resetDisplay();
 }
 
-void MainWindow::changeSignPressed()
-{
+void MainWindow::changeSignPressed() {
     if (operationCompleted_) return;
 
     auto text = ui_->display->text();
@@ -141,10 +130,8 @@ void MainWindow::changeSignPressed()
     ui_->display->setText(text);
 }
 
-void MainWindow::equalPressed()
-{
-    if (waitingForOperator_) return;
-    if (operationCompleted_) return;
+void MainWindow::equalPressed() {
+    if (waitingForOperator_ || operationCompleted_) return;
 
     QString op;
 
@@ -174,10 +161,8 @@ void MainWindow::equalPressed()
     ui_->display->setText(result_);
 }
 
-void MainWindow::backspacePressed()
-{
-    if (operationCompleted_)
-        return;
+void MainWindow::backspacePressed() {
+    if (operationCompleted_) return;
 
     auto text = ui_->display->text();
     text.chop(1);
@@ -189,14 +174,12 @@ void MainWindow::backspacePressed()
     ui_->display->setText(text);
 }
 
-void MainWindow::clearPressed()
-{
+void MainWindow::clearPressed() {
     ui_->display->setText(Consts::defaultVal);
     waitingForOperand_ = true;
 }
 
-void MainWindow::clearAllPressed()
-{
+void MainWindow::clearAllPressed() {
     waitingForOperand_ = true;
     waitingForOperator_ = false;
     operationCompleted_ = false;
@@ -205,12 +188,10 @@ void MainWindow::clearAllPressed()
     resetCalculationPanel();
 }
 
-void MainWindow::memoryPressed()
-{
+void MainWindow::memoryPressed() {
     auto currentOperation = qobject_cast<QPushButton*>(sender())->text();
 
-    if (currentOperation == Consts::addToMemory)
-        memory_.append(result_);
+    if (currentOperation == Consts::addToMemory) memory_.append(result_);
 
     if (!memory_.isEmpty()) {
         if (currentOperation == Consts::clearMemory)
@@ -220,42 +201,31 @@ void MainWindow::memoryPressed()
     }
 }
 
-void MainWindow::resetDisplay(bool clearAllText)
-{
+void MainWindow::resetDisplay(bool clearAllText) {
     ui_->display->setText(clearAllText ? Consts::empty : Consts::defaultVal);
 }
 
-void MainWindow::resetCalculationPanel()
-{
+void MainWindow::resetCalculationPanel() {
     ui_->calculationPanel->setText(Consts::empty);
 }
 
-QString MainWindow::calculate(Operation operation)
-{
+QString MainWindow::calculate(Operation operation) {
     wingmann::big_integer number{value_.toStdString()};
     std::string result;
-    auto current_display_value = ui_->display->text().toStdString();
+    auto currentDisplayValue = ui_->display->text().toStdString();
 
     switch (operation) {
     case Operation::Add:
-        result = number
-            .add(current_display_value)
-            .to_string();
+        result = number.add(currentDisplayValue).to_string();
         break;
     case Operation::Subtract:
-        result = number
-            .subtract(current_display_value)
-            .to_string();
+        result = number.subtract(currentDisplayValue).to_string();
         break;
     case Operation::Multiply:
-        result = number
-            .multiply(current_display_value)
-            .to_string();
+        result = number.multiply(currentDisplayValue).to_string();
         break;
     case Operation::Divide:
-        result = number
-            .divide(current_display_value)
-            .to_string();
+        result = number.divide(currentDisplayValue).to_string();
         break;
     default:
         break;
