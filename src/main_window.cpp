@@ -1,11 +1,12 @@
 #include "main_window.h"
-#include "big_integer.h"
+#include "big_integer/big_integer.h"
 #include "constants.h"
 #include "ui_main_window.h"
 
+using namespace wingmann::numerics;
+
 MainWindow::MainWindow(QString&& title, QWidget* parent)
-    : QMainWindow{parent}, ui_{new Ui::MainWindow}
-{
+    : QMainWindow{parent}, ui_{new Ui::MainWindow} {
     ui_->setupUi(this);
     setWindowTitle(title);
 
@@ -41,13 +42,11 @@ MainWindow::MainWindow(QString&& title, QWidget* parent)
     connect(ui_->pushButton_addToMemory, &QPushButton::clicked, this, &MainWindow::memoryPressed);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui_;
 }
 
-void MainWindow::digitPressed()
-{
+void MainWindow::digitPressed() {
     auto button = qobject_cast<QPushButton*>(sender());
 
     if (operationCompleted_) {
@@ -68,16 +67,14 @@ void MainWindow::digitPressed()
     ui_->display->setText(ui_->display->text() + button->text());
 }
 
-void MainWindow::addPressed()
-{
+void MainWindow::addPressed() {
     if (operationCompleted_) return;
 
     currentOperation_ = Operation::Add;
     setArithmeticOperation();
 }
 
-void MainWindow::subtractPressed()
-{
+void MainWindow::subtractPressed() {
     if (operationCompleted_)
         return;
 
@@ -85,8 +82,7 @@ void MainWindow::subtractPressed()
     setArithmeticOperation();
 }
 
-void MainWindow::multiplyPressed()
-{
+void MainWindow::multiplyPressed() {
     if (operationCompleted_)
         return;
 
@@ -94,8 +90,7 @@ void MainWindow::multiplyPressed()
     setArithmeticOperation();
 }
 
-void MainWindow::dividePressed()
-{
+void MainWindow::dividePressed() {
     if (operationCompleted_)
         return;
 
@@ -103,8 +98,7 @@ void MainWindow::dividePressed()
     setArithmeticOperation();
 }
 
-void MainWindow::setArithmeticOperation()
-{
+void MainWindow::setArithmeticOperation() {
     switch (currentOperation_) {
     case Operation::Add:
         ui_->calculationPanel->setText(Consts::add);
@@ -130,8 +124,7 @@ void MainWindow::setArithmeticOperation()
     resetDisplay();
 }
 
-void MainWindow::changeSignPressed()
-{
+void MainWindow::changeSignPressed() {
     if (operationCompleted_)
         return;
 
@@ -145,8 +138,7 @@ void MainWindow::changeSignPressed()
     ui_->display->setText(text);
 }
 
-void MainWindow::equalPressed()
-{
+void MainWindow::equalPressed() {
     if (waitingForOperator_ || operationCompleted_)
         return;
 
@@ -178,8 +170,7 @@ void MainWindow::equalPressed()
     ui_->display->setText(result_);
 }
 
-void MainWindow::backspacePressed()
-{
+void MainWindow::backspacePressed() {
     if (operationCompleted_)
         return;
 
@@ -193,14 +184,12 @@ void MainWindow::backspacePressed()
     ui_->display->setText(text);
 }
 
-void MainWindow::clearPressed()
-{
+void MainWindow::clearPressed() {
     ui_->display->setText(Consts::defaultVal);
     waitingForOperand_ = true;
 }
 
-void MainWindow::clearAllPressed()
-{
+void MainWindow::clearAllPressed() {
     waitingForOperand_ = true;
     waitingForOperator_ = false;
     operationCompleted_ = false;
@@ -209,8 +198,7 @@ void MainWindow::clearAllPressed()
     resetCalculationPanel();
 }
 
-void MainWindow::memoryPressed()
-{
+void MainWindow::memoryPressed() {
     auto currentOperation = qobject_cast<QPushButton*>(sender())->text();
 
     if (currentOperation == Consts::addToMemory)
@@ -224,19 +212,16 @@ void MainWindow::memoryPressed()
     }
 }
 
-void MainWindow::resetDisplay(bool clearAllText)
-{
+void MainWindow::resetDisplay(bool clearAllText) {
     ui_->display->setText(clearAllText ? Consts::empty : Consts::defaultVal);
 }
 
-void MainWindow::resetCalculationPanel()
-{
+void MainWindow::resetCalculationPanel() {
     ui_->calculationPanel->setText(Consts::empty);
 }
 
-QString MainWindow::calculate(Operation operation)
-{
-    wingmann::big_integer number{value_.toStdString()};
+QString MainWindow::calculate(Operation operation) {
+    big_integer number{value_.toStdString()};
     std::string result;
     auto currentDisplayValue = ui_->display->text().toStdString();
 

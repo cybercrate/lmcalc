@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.20)
 project(longmath_calculator)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -20,13 +20,7 @@ find_package(Qt6 COMPONENTS
     Widgets
     REQUIRED)
 
-set(LIB_BIGINTEGER lib/biginteger)
-
-include_directories(
-    include
-    ${LIB_BIGINTEGER}/include)
-
-add_subdirectory(${LIB_BIGINTEGER})
+add_subdirectory("lib/biginteger")
 
 file(GLOB PROJECT_SOURCES src/*.cpp src/*.ui include/*.h)
 
@@ -36,11 +30,13 @@ else()
     add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 endif()
 
+target_include_directories(${PROJECT_NAME} PUBLIC include)
+
 target_link_libraries(${PROJECT_NAME}
     Qt::Core
     Qt::Gui
     Qt::Widgets
-    lib_biginteger)
+    biginteger)
 
 if(WIN32)
     set(DEBUG_SUFFIX)

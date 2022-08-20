@@ -31,9 +31,12 @@
 *.out
 *.app
 
-# Folders
-build/
-out/
+# Temporary IDE folders
 .idea/
 .vs/
+
+# Temporary project folders
+build/
+cmake-build-debug/
+out/
 lib/
