@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 3.20)
-project(longmath_calculator)
+project(longmath_calculator VERSION 1.0.0 LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -14,29 +12,25 @@ if(WIN32)
     set(CMAKE_PREFIX_PATH $ENV{QT_CMAKE_PATH_MSVC})
 endif()
 
-find_package(Qt6 COMPONENTS
-    Core
-    Gui
-    Widgets
-    REQUIRED)
+list(APPEND PROJECT_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/include")
 
-add_subdirectory("lib/biginteger")
+find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
 
-file(GLOB PROJECT_SOURCES src/*.cpp src/*.ui include/*.h)
+file(GLOB PROJECT_SOURCES
+    "src/*.cpp"
+    "src/*.ui"
+    "include/*.h")
 
-if (WIN32)
+if(WIN32)
     add_executable(${PROJECT_NAME} WIN32 ${PROJECT_SOURCES})
 else()
     add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 endif()
 
-target_include_directories(${PROJECT_NAME} PUBLIC include)
-
-target_link_libraries(${PROJECT_NAME}
-    Qt::Core
-    Qt::Gui
-    Qt::Widgets
-    biginteger)
+if(Qt6_FOUND)
+    target_include_directories(${PROJECT_NAME} PUBLIC ${Qt6_INCLUDE_DIRS} ${PROJECT_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets)
+endif()
 
 if(WIN32)
     set(DEBUG_SUFFIX)

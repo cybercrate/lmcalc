@@ -1,5 +1,5 @@
 #include "main_window.h"
-#include "big_integer/big_integer.h"
+#include "big_integer.h"
 #include "constants.h"
 #include "ui_main_window.h"
 
@@ -100,20 +100,20 @@ void MainWindow::dividePressed() {
 
 void MainWindow::setArithmeticOperation() {
     switch (currentOperation_) {
-    case Operation::Add:
-        ui_->calculationPanel->setText(Consts::add);
-        break;
-    case Operation::Subtract:
-        ui_->calculationPanel->setText(Consts::subtract);
-        break;
-    case Operation::Multiply:
-        ui_->calculationPanel->setText(Consts::multiply);
-        break;
-    case Operation::Divide:
-        ui_->calculationPanel->setText(Consts::divide);
-        break;
-    default:
-        break;
+        case Operation::Add:
+            ui_->calculationPanel->setText(Consts::add);
+            break;
+        case Operation::Subtract:
+            ui_->calculationPanel->setText(Consts::subtract);
+            break;
+        case Operation::Multiply:
+            ui_->calculationPanel->setText(Consts::multiply);
+            break;
+        case Operation::Divide:
+            ui_->calculationPanel->setText(Consts::divide);
+            break;
+        default:
+            break;
     }
     waitingForOperator_ = false;
     waitingForOperand_ = true;
@@ -145,20 +145,20 @@ void MainWindow::equalPressed() {
     QString op;
 
     switch (currentOperation_) {
-    case Operation::Add:
-        op = Consts::add;
-        break;
-    case Operation::Subtract:
-        op = Consts::subtract;
-        break;
-    case Operation::Multiply:
-        op = Consts::multiply;
-        break;
-    case Operation::Divide:
-        op = Consts::divide;
-        break;
-    default:
-        break;
+        case Operation::Add:
+            op = Consts::add;
+            break;
+        case Operation::Subtract:
+            op = Consts::subtract;
+            break;
+        case Operation::Multiply:
+            op = Consts::multiply;
+            break;
+        case Operation::Divide:
+            op = Consts::divide;
+            break;
+        default:
+            break;
     }
     auto text = value_ + " " + op + " " + ui_->display->text();
     ui_->calculationPanel->setText(text);
@@ -226,20 +226,20 @@ QString MainWindow::calculate(Operation operation) {
     auto currentDisplayValue = ui_->display->text().toStdString();
 
     switch (operation) {
-    case Operation::Add:
-        result = number.add(currentDisplayValue).to_string();
-        break;
-    case Operation::Subtract:
-        result = number.subtract(currentDisplayValue).to_string();
-        break;
-    case Operation::Multiply:
-        result = number.multiply(currentDisplayValue).to_string();
-        break;
-    case Operation::Divide:
-        result = number.divide(currentDisplayValue).to_string();
-        break;
-    default:
-        break;
+        case Operation::Add:
+            result = number.add(currentDisplayValue).to_string();
+            break;
+        case Operation::Subtract:
+            result = number.subtract(currentDisplayValue).to_string();
+            break;
+        case Operation::Multiply:
+            result = number.multiply(currentDisplayValue).to_string();
+            break;
+        case Operation::Divide:
+            result = number.divide(currentDisplayValue).to_string();
+            break;
+        default:
+            break;
     }
     return QString::fromStdString(result);
 }
