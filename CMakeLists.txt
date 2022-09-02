@@ -12,7 +12,9 @@ if(WIN32)
     set(CMAKE_PREFIX_PATH $ENV{QT_CMAKE_PATH_MSVC})
 endif()
 
-list(APPEND PROJECT_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/include")
+list(APPEND PROJECT_INCLUDE_DIRS
+    "${CMAKE_SOURCE_DIR}/include"
+    "${CMAKE_SOURCE_DIR}/lib/biginteger/single_include")
 
 find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
 

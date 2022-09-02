@@ -1,12 +1,10 @@
+#include <big_integer/big_integer.h>
+
 #include "main_window.h"
-#include "big_integer.h"
 #include "constants.h"
 #include "ui_main_window.h"
 
-using namespace wingmann::numerics;
-
-MainWindow::MainWindow(QString&& title, QWidget* parent)
-    : QMainWindow{parent}, ui_{new Ui::MainWindow} {
+MainWindow::MainWindow(QString&& title, QWidget* parent) : QMainWindow{parent}, ui_{new Ui::MainWindow} {
     ui_->setupUi(this);
     setWindowTitle(title);
 
@@ -49,11 +47,11 @@ MainWindow::~MainWindow() {
 void MainWindow::digitPressed() {
     auto button = qobject_cast<QPushButton*>(sender());
 
-    if (operationCompleted_) {
+    if (operationComplete_) {
         resetDisplay();
         resetCalculationPanel();
 
-        operationCompleted_ = false;
+        operationComplete_ = false;
         waitingForOperand_ = true;
         waitingForOperator_ = true;
 
@@ -68,32 +66,29 @@ void MainWindow::digitPressed() {
 }
 
 void MainWindow::addPressed() {
-    if (operationCompleted_) return;
+    if (operationComplete_) return;
 
     currentOperation_ = Operation::Add;
     setArithmeticOperation();
 }
 
 void MainWindow::subtractPressed() {
-    if (operationCompleted_)
+    if (operationComplete_)
         return;
-
     currentOperation_ = Operation::Subtract;
     setArithmeticOperation();
 }
 
 void MainWindow::multiplyPressed() {
-    if (operationCompleted_)
+    if (operationComplete_)
         return;
-
     currentOperation_ = Operation::Multiply;
     setArithmeticOperation();
 }
 
 void MainWindow::dividePressed() {
-    if (operationCompleted_)
+    if (operationComplete_)
         return;
-
     currentOperation_ = Operation::Divide;
     setArithmeticOperation();
 }
@@ -120,14 +115,12 @@ void MainWindow::setArithmeticOperation() {
 
     if (value_.isEmpty())
         value_ = ui_->display->text();
-
     resetDisplay();
 }
 
 void MainWindow::changeSignPressed() {
-    if (operationCompleted_)
+    if (operationComplete_)
         return;
-
     auto text = ui_->display->text();
 
     if (text.startsWith(Consts::negative))
@@ -139,9 +132,8 @@ void MainWindow::changeSignPressed() {
 }
 
 void MainWindow::equalPressed() {
-    if (waitingForOperator_ || operationCompleted_)
+    if (waitingForOperator_ || operationComplete_)
         return;
-
     QString op;
 
     switch (currentOperation_) {
@@ -163,7 +155,7 @@ void MainWindow::equalPressed() {
     auto text = value_ + " " + op + " " + ui_->display->text();
     ui_->calculationPanel->setText(text);
 
-    operationCompleted_ = true;
+    operationComplete_ = true;
     result_ = calculate(currentOperation_);
     value_ = Consts::empty;
 
@@ -171,7 +163,7 @@ void MainWindow::equalPressed() {
 }
 
 void MainWindow::backspacePressed() {
-    if (operationCompleted_)
+    if (operationComplete_)
         return;
 
     auto text = ui_->display->text();
@@ -192,7 +184,7 @@ void MainWindow::clearPressed() {
 void MainWindow::clearAllPressed() {
     waitingForOperand_ = true;
     waitingForOperator_ = false;
-    operationCompleted_ = false;
+    operationComplete_ = false;
 
     resetDisplay();
     resetCalculationPanel();
@@ -204,12 +196,13 @@ void MainWindow::memoryPressed() {
     if (currentOperation == Consts::addToMemory)
         memory_.append(result_);
 
-    if (!memory_.isEmpty()) {
-        if (currentOperation == Consts::clearMemory)
-            memory_ = Consts::empty;
-        else if (currentOperation == Consts::readMemory)
-            ui_->display->setText(memory_);
-    }
+    if (memory_.isEmpty())
+        return;
+
+    if (currentOperation == Consts::clearMemory)
+        memory_ = Consts::empty;
+    else if (currentOperation == Consts::readMemory)
+        ui_->display->setText(memory_);
 }
 
 void MainWindow::resetDisplay(bool clearAllText) {
@@ -221,7 +214,7 @@ void MainWindow::resetCalculationPanel() {
 }
 
 QString MainWindow::calculate(Operation operation) {
-    big_integer number{value_.toStdString()};
+    wingmann::numerics::big_integer number{value_.toStdString()};
     std::string result;
     auto currentDisplayValue = ui_->display->text().toStdString();
 

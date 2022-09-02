@@ -12,11 +12,6 @@ namespace Ui {
 class MainWindow final : public QMainWindow {
     Q_OBJECT
 
-public:
-    explicit MainWindow(QString&& title, QWidget* parent = nullptr);
-    ~MainWindow() override;
-
-private:
     Ui::MainWindow* ui_;
 
     Operation currentOperation_{Operation::None};
@@ -27,7 +22,11 @@ private:
 
     bool waitingForOperand_{false};
     bool waitingForOperator_{true};
-    bool operationCompleted_{false};
+    bool operationComplete_{false};
+
+public:
+    explicit MainWindow(QString&& title, QWidget* parent = nullptr);
+    ~MainWindow() override;
 
 private:
     void setArithmeticOperation();
