@@ -14,7 +14,7 @@ endif()
 
 set(PROJECT_INCLUDE_DIRS
     "${CMAKE_SOURCE_DIR}/include"
-    "${CMAKE_SOURCE_DIR}/lib/biginteger/single_include")
+    "${CMAKE_SOURCE_DIR}/build/biginteger/single_include")
 
 find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
 
