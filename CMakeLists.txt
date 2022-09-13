@@ -8,13 +8,15 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 if(WIN32)
     set(CMAKE_PREFIX_PATH $ENV{QT_CMAKE_PATH_MSVC})
 endif()
 
 set(PROJECT_INCLUDE_DIRS
     "${CMAKE_SOURCE_DIR}/include"
-    "${CMAKE_SOURCE_DIR}/build/biginteger/single_include")
+    "${CMAKE_SOURCE_DIR}/lib/biginteger/single_include")
 
 find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
 

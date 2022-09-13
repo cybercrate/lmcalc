@@ -1,7 +1,7 @@
 #include <big_integer/big_integer.h>
 
-#include "main_window.h"
-#include "constants.h"
+#include "longmath_calculator/main_window.h"
+#include "longmath_calculator/constants.h"
 #include "ui_main_window.h"
 
 MainWindow::MainWindow(QString&& title, QWidget* parent) : QMainWindow{parent}, ui_{new Ui::MainWindow} {

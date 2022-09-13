@@ -1,7 +1,9 @@
+qt_wrap_ui(UI_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/*.ui")
+
 file(GLOB PROJECT_SOURCES
-    "*.cpp"
-    "*.ui"
-    "${CMAKE_SOURCE_DIR}/include/*.h")
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
+    "${CMAKE_SOURCE_DIR}/include/${PROJECT_NAME}/*.h"
+    ${UI_HEADERS})
 
 if(WIN32)
     add_executable(${PROJECT_NAME} WIN32 ${PROJECT_SOURCES})
@@ -9,8 +11,11 @@ else()
     add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 endif()
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${Qt6_INCLUDE_DIRS} ${PROJECT_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets)
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PUBLIC
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Widgets)
 
 if(WIN32)
     set(DEBUG_SUFFIX)

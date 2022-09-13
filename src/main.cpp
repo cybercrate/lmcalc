@@ -1,4 +1,4 @@
-#include "main_window.h"
+#include "longmath_calculator/main_window.h"
 
 #include <QApplication>
 
