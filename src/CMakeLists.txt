@@ -1,14 +1,15 @@
-qt_wrap_ui(UI_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/*.ui")
-
 file(GLOB PROJECT_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
-    "${CMAKE_SOURCE_DIR}/include/${PROJECT_NAME}/*.h"
-    ${UI_HEADERS})
+    "${CMAKE_SOURCE_DIR}/include/${PROJECT_NAME}/*.h")
+
+add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 
 if(WIN32)
-    add_executable(${PROJECT_NAME} WIN32 ${PROJECT_SOURCES})
-else()
-    add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE"
+        LINK_FLAGS_RELEASE "/SUBSYSTEM:windows /ENTRY:mainCRTStartup"
+        LINK_FLAGS_RELWITHDEBINFO "/SUBSYSTEM:windows /ENTRY:mainCRTStartup"
+        LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_INCLUDE_DIRS})
