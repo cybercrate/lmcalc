@@ -18,7 +18,9 @@ endif()
 
 set(PROJECT_INCLUDE_DIRS
     "${CMAKE_SOURCE_DIR}/include"
-    "${CMAKE_SOURCE_DIR}/lib/biginteger/single_include")
+    "${CMAKE_SOURCE_DIR}/lib/biginteger/include")
+
+set(BIGINTEGER_BINARY_PATH "${CMAKE_SOURCE_DIR}/lib/biginteger/bin")
 
 find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
 
