@@ -4,6 +4,8 @@
 #include "longmath_calculator/constants.h"
 #include "ui_main_window.h"
 
+using BigInteger = wingmann::numerics::big_integer;
+
 MainWindow::MainWindow(QString&& title, QWidget* parent) : QMainWindow{parent}, ui_{new Ui::MainWindow} {
     ui_->setupUi(this);
     setWindowTitle(title);
@@ -214,25 +216,20 @@ void MainWindow::resetCalculationPanel() {
 }
 
 QString MainWindow::calculate(Operation operation) {
-    wingmann::numerics::big_integer number{value_.toStdString()};
-    std::string result;
-    auto currentDisplayValue = ui_->display->text().toStdString();
+    BigInteger lhs = value_.toStdString();
+    BigInteger rhs = ui_->display->text().toStdString();
 
     switch (operation) {
-        case Operation::Add:
-            result = number.add(currentDisplayValue).to_string();
-            break;
-        case Operation::Subtract:
-            result = number.subtract(currentDisplayValue).to_string();
-            break;
-        case Operation::Multiply:
-            result = number.multiply(currentDisplayValue).to_string();
-            break;
-        case Operation::Divide:
-            result = number.divide(currentDisplayValue).to_string();
-            break;
-        default:
-            break;
+    case Operation::Add:
+        return QString::fromStdString((lhs + rhs).to_string());
+    case Operation::Subtract:
+        return QString::fromStdString((lhs - rhs).to_string());
+    case Operation::Multiply:
+        return QString::fromStdString((lhs * rhs).to_string());
+    case Operation::Divide:
+        return QString::fromStdString((lhs / rhs).to_string());
+    default:
+        break;
     }
-    return QString::fromStdString(result);
+    return QString{};
 }
