@@ -13,11 +13,17 @@ if(WIN32)
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_INCLUDE_DIRS})
+
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Core
     Qt6::Gui
-    Qt6::Widgets
-    "${BIGINTEGER_BINARY_PATH}/biginteger.lib")
+    Qt6::Widgets)
+
+if(CMAKE_BUILD_TYPE MATCHES "Debug")
+    target_link_libraries(${PROJECT_NAME} PRIVATE "${BIGINTEGER_BINARY_PATH}/debug/biginteger.lib")
+else()
+    target_link_libraries(${PROJECT_NAME} PRIVATE "${BIGINTEGER_BINARY_PATH}/release/biginteger.lib")
+endif()
 
 if(WIN32)
     set(DEBUG_SUFFIX)
