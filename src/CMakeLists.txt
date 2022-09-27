@@ -5,11 +5,13 @@ file(GLOB PROJECT_SOURCES
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 
 if(WIN32)
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE"
-        LINK_FLAGS_RELEASE "/SUBSYSTEM:windows /ENTRY:mainCRTStartup"
-        LINK_FLAGS_RELWITHDEBINFO "/SUBSYSTEM:windows /ENTRY:mainCRTStartup"
-        LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+    if(CMAKE_BUILD_TYPE MATCHES "Debug")
+        set_target_properties(${PROJECT_NAME} PROPERTIES
+            LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE")
+    else()
+        set_target_properties(${PROJECT_NAME} PROPERTIES
+            LINK_FLAGS_RELEASE "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+    endif()
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_INCLUDE_DIRS})

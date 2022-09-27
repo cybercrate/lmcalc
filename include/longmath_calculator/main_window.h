@@ -5,9 +5,7 @@
 
 #include <QMainWindow>
 
-namespace Ui {
-    class MainWindow;
-}
+namespace Ui { class MainWindow; }
 
 class MainWindow final : public QMainWindow {
     Q_OBJECT
@@ -20,9 +18,9 @@ class MainWindow final : public QMainWindow {
     QString result_;
     QString memory_;
 
-    bool waitingForOperand_{false};
+    bool waitingForOperand_{};
     bool waitingForOperator_{true};
-    bool operationComplete_{false};
+    bool operationComplete_{};
 
 public:
     explicit MainWindow(QString&& title, QWidget* parent = nullptr);

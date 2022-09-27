@@ -6,7 +6,7 @@ enum class Operation {
     Add,
     Subtract,
     Multiply,
-    Divide,
+    Divide
 };
 
 #endif // OPERATION_H
