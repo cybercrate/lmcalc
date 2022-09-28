@@ -43,13 +43,11 @@ MainWindow::MainWindow(QString&& title, QWidget* parent)
     connect(ui_->pushButton_addToMemory, &QPushButton::clicked, this, &MainWindow::memoryPressed);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui_;
 }
 
-void MainWindow::digitPressed()
-{
+void MainWindow::digitPressed() {
     auto button = qobject_cast<QPushButton*>(sender());
 
     if (operationComplete_) {
@@ -69,8 +67,7 @@ void MainWindow::digitPressed()
     ui_->display->setText(ui_->display->text() + button->text());
 }
 
-void MainWindow::addPressed()
-{
+void MainWindow::addPressed() {
     if (operationComplete_)
         return;
 
@@ -78,32 +75,28 @@ void MainWindow::addPressed()
     setArithmeticOperation();
 }
 
-void MainWindow::subtractPressed()
-{
+void MainWindow::subtractPressed() {
     if (operationComplete_)
         return;
     currentOperation_ = Operation::Subtract;
     setArithmeticOperation();
 }
 
-void MainWindow::multiplyPressed()
-{
+void MainWindow::multiplyPressed() {
     if (operationComplete_)
         return;
     currentOperation_ = Operation::Multiply;
     setArithmeticOperation();
 }
 
-void MainWindow::dividePressed()
-{
+void MainWindow::dividePressed() {
     if (operationComplete_)
         return;
     currentOperation_ = Operation::Divide;
     setArithmeticOperation();
 }
 
-void MainWindow::setArithmeticOperation()
-{
+void MainWindow::setArithmeticOperation() {
     switch (currentOperation_) {
     case Operation::Add:
         ui_->calculationPanel->setText(Consts::add);
@@ -128,8 +121,7 @@ void MainWindow::setArithmeticOperation()
     resetDisplay();
 }
 
-void MainWindow::changeSignPressed()
-{
+void MainWindow::changeSignPressed() {
     if (operationComplete_)
         return;
     auto text = ui_->display->text();
@@ -142,8 +134,7 @@ void MainWindow::changeSignPressed()
     ui_->display->setText(text);
 }
 
-void MainWindow::equalPressed()
-{
+void MainWindow::equalPressed() {
     if (waitingForOperator_ || operationComplete_)
         return;
     QString op;
@@ -174,8 +165,7 @@ void MainWindow::equalPressed()
     ui_->display->setText(result_);
 }
 
-void MainWindow::backspacePressed()
-{
+void MainWindow::backspacePressed() {
     if (operationComplete_)
         return;
 
@@ -189,14 +179,12 @@ void MainWindow::backspacePressed()
     ui_->display->setText(text);
 }
 
-void MainWindow::clearPressed()
-{
+void MainWindow::clearPressed() {
     ui_->display->setText(Consts::defaultVal);
     waitingForOperand_ = true;
 }
 
-void MainWindow::clearAllPressed()
-{
+void MainWindow::clearAllPressed() {
     waitingForOperand_ = true;
     waitingForOperator_ = false;
     operationComplete_ = false;
@@ -205,8 +193,7 @@ void MainWindow::clearAllPressed()
     resetCalculationPanel();
 }
 
-void MainWindow::memoryPressed()
-{
+void MainWindow::memoryPressed() {
     auto currentOperation = qobject_cast<QPushButton*>(sender())->text();
 
     if (currentOperation == Consts::addToMemory)
@@ -221,32 +208,29 @@ void MainWindow::memoryPressed()
         ui_->display->setText(memory_);
 }
 
-void MainWindow::resetDisplay(bool clearAllText)
-{
+void MainWindow::resetDisplay(bool clearAllText) {
     ui_->display->setText(clearAllText ? Consts::empty : Consts::defaultVal);
 }
 
-void MainWindow::resetCalculationPanel()
-{
+void MainWindow::resetCalculationPanel() {
     ui_->calculationPanel->setText(Consts::empty);
 }
 
-QString MainWindow::calculate(Operation operation)
-{
+QString MainWindow::calculate(Operation operation) {
     BigInteger lhs = value_.toStdString();
     BigInteger rhs = ui_->display->text().toStdString();
 
     switch (operation) {
     case Operation::Add:
-        return QString::fromStdString((lhs + rhs).to_string());
+        return (lhs + rhs).to_string().c_str();
     case Operation::Subtract:
-        return QString::fromStdString((lhs - rhs).to_string());
+        return (lhs - rhs).to_string().c_str();
     case Operation::Multiply:
-        return QString::fromStdString((lhs * rhs).to_string());
+        return (lhs * rhs).to_string().c_str();
     case Operation::Divide:
-        return QString::fromStdString((lhs / rhs).to_string());
+        return (lhs / rhs).to_string().c_str();
     default:
         break;
     }
-    return QString{};
+    return {};
 }
