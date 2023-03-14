@@ -1,7 +1,11 @@
-build/
-cmake-build-debug/
-out/
-lib/
+# Build output directories
+/build
+/cmake-build-debug
+/bin
+/out
+/target
+/lib
 
-.idea/
-.vs/
+# Personal IDE config files
+.idea
+.vs
