@@ -2,8 +2,7 @@
 
 #include <QApplication>
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
     QApplication app{argc, argv};
 
 #if WIN32 || WIN64

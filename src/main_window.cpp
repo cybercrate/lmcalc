@@ -1,10 +1,11 @@
-#include <big_integer/big_integer.h>
+#include <alef/numerics/biginteger.h>
 
 #include "longmath_calculator/main_window.h"
 #include "longmath_calculator/constants.h"
+
 #include "ui_main_window.h"
 
-using BigInteger = wingmann::numerics::big_integer;
+using BigInteger = alf::num::biginteger;
 
 MainWindow::MainWindow(QString&& title, QWidget* parent)
     : QMainWindow{parent}, ui_{new Ui::MainWindow}
@@ -43,13 +44,11 @@ MainWindow::MainWindow(QString&& title, QWidget* parent)
     connect(ui_->pushButton_addToMemory, &QPushButton::clicked, this, &MainWindow::memoryPressed);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui_;
 }
 
-void MainWindow::digitPressed()
-{
+void MainWindow::digitPressed() {
     auto button = qobject_cast<QPushButton*>(sender());
 
     if (operationComplete_) {
@@ -63,51 +62,45 @@ void MainWindow::digitPressed()
         currentOperation_ = Operation::None;
         value_ = Consts::empty;
     }
-
-    if (ui_->display->text() == Consts::defaultVal)
+    if (ui_->display->text() == Consts::defaultVal) {
         resetDisplay(true);
-
+    }
     ui_->display->setText(ui_->display->text() + button->text());
 }
 
-void MainWindow::addPressed()
-{
-    if (operationComplete_)
+void MainWindow::addPressed() {
+    if (operationComplete_) {
         return;
-
+    }
     currentOperation_ = Operation::Add;
     setArithmeticOperation();
 }
 
-void MainWindow::subtractPressed()
-{
-    if (operationComplete_)
+void MainWindow::subtractPressed() {
+    if (operationComplete_) {
         return;
-
+    }
     currentOperation_ = Operation::Subtract;
     setArithmeticOperation();
 }
 
-void MainWindow::multiplyPressed()
-{
-    if (operationComplete_)
+void MainWindow::multiplyPressed() {
+    if (operationComplete_) {
         return;
-
+    }
     currentOperation_ = Operation::Multiply;
     setArithmeticOperation();
 }
 
-void MainWindow::dividePressed()
-{
-    if (operationComplete_)
+void MainWindow::dividePressed() {
+    if (operationComplete_) {
         return;
-
+    }
     currentOperation_ = Operation::Divide;
     setArithmeticOperation();
 }
 
-void MainWindow::setArithmeticOperation()
-{
+void MainWindow::setArithmeticOperation() {
     switch (currentOperation_) {
     case Operation::Add:
         ui_->calculationPanel->setText(Consts::add);
@@ -127,29 +120,30 @@ void MainWindow::setArithmeticOperation()
     waitingForOperator_ = false;
     waitingForOperand_ = true;
 
-    if (value_.isEmpty())
+    if (value_.isEmpty()) {
         value_ = ui_->display->text();
+    }
     resetDisplay();
 }
 
-void MainWindow::changeSignPressed()
-{
-    if (operationComplete_)
+void MainWindow::changeSignPressed() {
+    if (operationComplete_) {
         return;
+    }
     auto text = ui_->display->text();
 
-    if (text.startsWith(Consts::negative))
+    if (text.startsWith(Consts::negative)) {
         text.remove(0, 1);
-    else if (text != Consts::defaultVal)
+    } else if (text != Consts::defaultVal) {
         text.prepend(Consts::negative);
-
+    }
     ui_->display->setText(text);
 }
 
-void MainWindow::equalPressed()
-{
-    if (waitingForOperator_ || operationComplete_)
+void MainWindow::equalPressed() {
+    if (waitingForOperator_ || operationComplete_) {
         return;
+    }
     QString op;
 
     switch (currentOperation_) {
@@ -178,11 +172,10 @@ void MainWindow::equalPressed()
     ui_->display->setText(result_);
 }
 
-void MainWindow::backspacePressed()
-{
-    if (operationComplete_)
+void MainWindow::backspacePressed() {
+    if (operationComplete_) {
         return;
-
+    }
     auto text = ui_->display->text();
     text.chop(1);
 
@@ -213,16 +206,17 @@ void MainWindow::memoryPressed()
 {
     auto currentOperation = qobject_cast<QPushButton*>(sender())->text();
 
-    if (currentOperation == Consts::addToMemory)
+    if (currentOperation == Consts::addToMemory) {
         memory_.append(result_);
-
-    if (memory_.isEmpty())
+    }
+    if (memory_.isEmpty()) {
         return;
-
-    if (currentOperation == Consts::clearMemory)
+    }
+    if (currentOperation == Consts::clearMemory) {
         memory_ = Consts::empty;
-    else if (currentOperation == Consts::readMemory)
+    } else if (currentOperation == Consts::readMemory) {
         ui_->display->setText(memory_);
+    }
 }
 
 void MainWindow::resetDisplay(bool clearAllText)
