@@ -1,4 +1,3 @@
-# LM Calculator
-Long math calculator with GUI Qt
+# Long math Calculator
 
 ![Screenshot](images/screenshots/LongmathCalculator.png)
