@@ -16,11 +16,15 @@ if(WIN32)
     set(CMAKE_PREFIX_PATH $ENV{QT_CMAKE_PATH})
 endif()
 
-set(PROJECT_INCLUDE_DIRS
-    "${CMAKE_SOURCE_DIR}/include"
+set(ALEF_INCLUDE_PATH
+    "${CMAKE_SOURCE_DIR}/lib/alef/include"
+    "${CMAKE_SOURCE_DIR}/lib/concepts/include"
+    "${CMAKE_SOURCE_DIR}/lib/cast/include"
     "${CMAKE_SOURCE_DIR}/lib/biginteger/include")
 
-set(BIGINTEGER_BINARY_PATH "${CMAKE_SOURCE_DIR}/lib/biginteger/bin")
+set(PROJECT_INCLUDE_DIRS
+    "${CMAKE_SOURCE_DIR}/include"
+    ${ALEF_INCLUDE_PATH})
 
 find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
 
