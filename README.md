@@ -1,3 +1,3 @@
 # Long Math Calculator
 
-![Screenshot](images/screenshots/Calculator.png)
+![Screenshot](images/screenshots/lmcalc.png)

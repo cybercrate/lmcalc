@@ -1,11 +1,9 @@
-#include <alef/numerics/biginteger.h>
+#include <biginteger/bigInteger.h>
 
-#include "longmath_calculator/main_window.h"
-#include "longmath_calculator/constants.h"
+#include "lmcalc/main_window.h"
+#include "lmcalc/constants.h"
 
 #include "ui_main_window.h"
-
-using BigInteger = alf::num::biginteger;
 
 MainWindow::MainWindow(QString&& title, QWidget* parent)
     : QMainWindow{parent}, ui_{new Ui::MainWindow}
@@ -231,8 +229,8 @@ void MainWindow::resetCalculationPanel()
 
 QString MainWindow::calculate(Operation operation)
 {
-    BigInteger lhs = value_.toStdString();
-    BigInteger rhs = ui_->display->text().toStdString();
+    wingmann::numerics::BigInteger lhs = value_.toStdString();
+    wingmann::numerics::BigInteger rhs = ui_->display->text().toStdString();
 
     switch (operation) {
     case Operation::Add:
